@@ -1,1 +1,2 @@
-port = '/dev/cu.usbmodemF412FA6F5D2C2'
+port = 'YOUR PORT HERE'
+baud = 9600
