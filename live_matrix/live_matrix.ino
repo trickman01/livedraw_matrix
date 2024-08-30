@@ -13,6 +13,17 @@ void serial_wait(){
   };
 }
 
+int combineBytes(byte data[4]){
+  int dex = 0;
+  int number = 0;
+  while(dex < 4){
+    number = number << 8;
+    number += data[dex];
+    dex++;
+  };
+  return number;
+}
+
 void setup(){
   Serial.begin(9600);
   matrix.begin();
@@ -22,42 +33,13 @@ void setup(){
 void loop(){
   serial_wait();
   Serial.readBytes(bytes1, 4);
-  int dex = 0;
-  int first_byte = 0;
-  while(dex < 4){
-    if(dex > 0){
-      first_byte = first_byte << 8;
-    }
-    first_byte = first_byte | bytes1[dex];
-    dex++;
-  }
+  int first_bytes = combineBytes(bytes1);
   serial_wait();
   Serial.readBytes(bytes2, 4);
-  dex = 0;
-  int second_byte = 0;
-  while(dex < 4){
-    if(dex > 0){
-      second_byte = second_byte << 8;
-    }
-    second_byte = second_byte | bytes2[dex];
-    dex++;
-  }
+  int second_bytes = combineBytes(bytes2);
   serial_wait();
   Serial.readBytes(bytes3, 4);
-  dex = 0;
-  int third_byte = 0;
-  while(dex < 4){
-    if(dex > 0){
-      third_byte = third_byte << 8;
-    }
-    third_byte = third_byte | bytes3[dex];
-    dex++;
-  }
-  uint32_t current_frame[] = {first_byte, second_byte, third_byte};
-  matrix.loadFrame(current_frame);
-
-
-
-
-    
+  int third_bytes = combineBytes(bytes3);
+  uint32_t current_frame[] = {first_bytes, second_bytes, third_bytes};
+  matrix.loadFrame(current_frame); 
 }

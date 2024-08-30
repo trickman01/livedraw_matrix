@@ -95,10 +95,12 @@ if __name__ == '__main__':
                     for p in pixel_list:
                         p.state = False
                         update = True
-                if event.key == pg.K_f: #turns all pixels on
+                if event.key == pg.K_f: #turns all pixels on ('fills')
                     for p in pixel_list:
                         p.state = True
                         update = True
+                if event.key == pg.K_u: #updates pixels on arduino manually.  Mostly for debugging.
+                    update = True
             if event.type == pg.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pg.mouse.get_pos()
                 clicked = True
@@ -117,6 +119,6 @@ if __name__ == '__main__':
             matrix_data = get_bytes(pixel_list)
             send_serial(matrix_data, arduino)
             pg.display.flip()
-
+    arduino.write(0x30c79e7fe7fe3fc1f80f0060.to_bytes(12))
     arduino.close()
     pg.quit()
